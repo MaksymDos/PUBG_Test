@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "4880c5b7-57b3-4cd7-b443-06b19fa5dc0c",
+		"name": "Ranked Stats PUBG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14414866"
+	},
+	"item": [
+		{
+			"name": "get-player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Get player account id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"accountId\", jsonData.data[0].id)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}{{platform}}/players/{{accountId}}",
+					"host": [
+						"{{baseUrl}}{{platform}}"
+					],
+					"path": [
+						"players",
+						"{{accountId}}"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-players",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Get player account id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"accountId\", jsonData.data[0].id)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}{{platform}}/players?filter[playerNames]=TGLTN",
+					"host": [
+						"{{baseUrl}}{{platform}}"
+					],
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "{{accountId}}",
+							"description": "get current player via account id",
+							"disabled": true
+						},
+						{
+							"key": "filter[playerIds]",
+							"value": "",
+							"description": "get layers via accountId",
+							"disabled": true
+						},
+						{
+							"key": "filter[playerNames]",
+							"value": "TGLTN",
+							"description": "get players via playerNames"
+						},
+						{
+							"key": null,
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-seasons",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get current season value id\", function () {",
+							"",
+							"let responseJson = pm.response.json();",
+							"",
+							"if (responseJson && responseJson.data && responseJson.data.length > 0) {",
+							"    for (let i = 0; i < responseJson.data.length; i++) {",
+							"        let season = responseJson.data[i];",
+							"        if (season.attributes && season.attributes.isCurrentSeason === true) {",
+							"            let id = season.id;",
+							"            pm.environment.set('seasonId', id)",
+							"            break;",
+							"        }",
+							"    }",
+							"}",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}{{platform}}/seasons",
+					"host": [
+						"{{baseUrl}}{{platform}}"
+					],
+					"path": [
+						"seasons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ranked-stats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}{{platform}}/players/{{accountId}}/seasons/{{seasonId}}/ranked",
+					"host": [
+						"{{baseUrl}}{{platform}}"
+					],
+					"path": [
+						"players",
+						"{{accountId}}",
+						"seasons",
+						"{{seasonId}}",
+						"ranked"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{apiKey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
